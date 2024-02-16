@@ -1,0 +1,27 @@
+config:
+  target: "http://localhost:8080"
+  phases:
+    - duration: 10
+      arrivalRate: 1000
+      name: "Initial"
+#    - duration: 240
+#      arrivalRate: 20
+#      rampTo: 100
+#      name: "Ramping up"
+#    - duration: 500
+#      arrivalRate: 100
+#      name: "Sustained load"
+  processor: "./dataSeed.js"
+  defaults:
+    headers:
+      username: josys
+      password: smart_sync_2.0
+      Content-Type: application/json
+
+scenarios:
+  - name: "Load<>Test"
+    flow:
+      - post:
+          beforeRequest: "generateData"
+          url: "/sync"
+          body: "{{ data }}"
