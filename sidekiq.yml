@@ -1,0 +1,28 @@
+config:
+  target: ""
+  timeout: 60
+  phases:
+    - duration: 1000
+      arrivalRate: 1
+      maxVusers: 1
+      name: "Simulation"
+#    - duration: 5
+#      arrivalRate: 1
+#      name: "Mid-stage"
+#    - duration: 10
+#      arrivalRate: 1
+#      name: "Final"
+  processor: "./sidekiq-dataSeed.js"
+  defaults:
+    headers:
+      authorization: ""
+      Content-Type: application/x-www-form-urlencoded
+
+scenarios:
+  - name: "Load<>Test"
+    flow:
+      - post:
+          beforeRequest: "generateData"
+          url: "/v1/resync_provisions"
+          form:
+            integration_array: "{{ data }}"
